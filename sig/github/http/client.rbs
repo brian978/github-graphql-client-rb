@@ -1,0 +1,40 @@
+use Github::Http::Api::Schema
+
+module Github
+  module Http
+    class Client
+      ENDPOINT: String
+      VERSION: String
+
+      @bearer_token: String
+      @uri: URI
+      @schema_loader: Schema
+      @http: String
+      @schema: Object
+      @client: Object
+
+      def initialize: (String, String, Schema | nil) -> self
+
+      def org_projects: (String) -> Hash[Object, Object]
+
+      private
+
+      attr_reader bearer_token: String
+      attr_reader uri: URI
+
+      def build_headers: -> Hash[String, String]
+
+      def build_request: -> String
+
+      def execute: -> Hash[Object, Object]
+
+      def http: -> Object
+
+      def http_client: -> Net::HTTP
+
+      def schema: -> Object
+
+      def client: -> Object
+    end
+  end
+end

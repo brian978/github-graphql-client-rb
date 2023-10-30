@@ -1,0 +1,14 @@
+module Github
+  module Http
+    module Api
+      class Schema
+        @token: String
+        @endpoint: String
+
+        def initialize: (String, String) -> self
+
+        def grab: -> String
+      end
+    end
+  end
+end
