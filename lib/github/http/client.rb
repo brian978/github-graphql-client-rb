@@ -20,6 +20,7 @@ module Github
           query organization ($login: String!, $afterProjId: String) {
               organization (login: $login) {
                   id
+                  databaseId
                   login
                   name
                   projectsV2(first: 25, after: $afterProjId) {
@@ -54,7 +55,8 @@ module Github
           }
         GRAPHQL
 
-        execute(query, { login: org })
+        result = execute(query, { login: org })
+        map_result_to_objects(result)["organization"]
       end
 
       private
@@ -82,6 +84,18 @@ module Github
       def execute(query, variables)
         response = http_client.post(uri.path, build_request(query, variables), build_headers)
         JSON.parse(response.body)
+      end
+
+      def map_result_to_objects(result)
+        result["data"].transform_values do |value|
+          if value.is_a?(Hash)
+            OpenStruct.new(value)
+          elsif value.is_a?(Array)
+            value.map { |item| OpenStruct.new(item) }
+          else
+            value
+          end
+        end
       end
     end
   end
